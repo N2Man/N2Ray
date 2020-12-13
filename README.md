@@ -4,7 +4,7 @@ The code of the book《Ray Tracing in One Weekend》and 《Ray Tracing: The Next
 
 And the final result is:
 
-![](image/final.jpg)
+![](image/image.jpg)
 
 ![](image/CornellBox.jpg)
 
