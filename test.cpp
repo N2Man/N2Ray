@@ -1,7 +1,22 @@
-#include<stdio.h>
- #include <omp.h>
-int main(int argc,char** argv){
-  #pragma omp parallel
-  printf("Hello World!\n");
-  return 0;
+#include <iostream>
+#include <thread>
+
+using namespace std;
+
+void output(int i)
+{
+	cout << i << endl;
+}
+
+int main()
+{
+	
+	for (uint8_t i = 0; i < 4; i++)
+	{
+		thread t(output, i);
+		t.detach();	
+	}
+		
+	getchar();
+	return 0;
 }

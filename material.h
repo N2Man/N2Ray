@@ -3,27 +3,30 @@
 
 #include "rtweekend.h"
 #include "hittable.h"
+#include "texture.h"
 struct hit_record;
 
 class material {
     public:
+        virtual color emitted(double u, double v, const point3& p) const {return color(0,0,0);}
         virtual bool scatter(const ray& r_in, const hit_record& rec, color& attenuation, ray& scattered) const = 0;
         
 };
 
-class lambertian : public material {
+class lambertian : public material {//漫反射
     public:
-        lambertian(const color& a) : albedo(a) {}
+        lambertian(const color& a) : albedo(make_shared<solid_color>(a)) {}
+        lambertian(shared_ptr<texture> a) : albedo(a) {}
         virtual bool scatter(
              const ray& r_in, const hit_record& rec, color& attenuation, ray& scattered
         ) const {
             vec3 scatter_direction = rec.normal + random_in_unit_sphere();
-            scattered = ray(rec.p, scatter_direction);
-            attenuation = albedo;
+            scattered = ray(rec.p, scatter_direction, r_in.time());
+            attenuation = albedo->value(rec.u, rec.v, rec.p);
             return true;
         }
      public:
-        color albedo;
+        shared_ptr<texture> albedo;
 };
 
 class metal : public material {
@@ -34,7 +37,7 @@ class metal : public material {
             const ray& r_in, const hit_record& rec, color& attenuation, ray& scattered
         ) const override {
             vec3 reflected = reflect(unit_vector(r_in.direction()), rec.normal);
-            scattered = ray(rec.p, reflected + fuzz*random_in_unit_sphere());
+            scattered = ray(rec.p, reflected + fuzz*random_in_unit_sphere(), r_in.time());
             attenuation = albedo;
             return (dot(scattered.direction(), rec.normal) > 0);
         }
@@ -50,7 +53,7 @@ double schlick(double cosine, double ref_idx) {
     return r0 + (1-r0)*pow((1 - cosine),5);
 }
 
-class dielectric : public material {
+class dielectric : public material {//电介质
     public:
         dielectric(double ri) : ref_idx(ri) {}
 
@@ -66,18 +69,18 @@ class dielectric : public material {
             double sin_theta = sqrt(1.0 - cos_theta*cos_theta);
             if (etai_over_etat * sin_theta > 1.0 ) {
                 vec3 reflected = reflect(unit_direction, rec.normal);
-                scattered = ray(rec.p, reflected);
+                scattered = ray(rec.p, reflected, r_in.time());
                 return true;
             }
             double reflect_prob = schlick(cos_theta, etai_over_etat);
             if (random_double() < reflect_prob)
             {
                 vec3 reflected = reflect(unit_direction, rec.normal);
-                scattered = ray(rec.p, reflected);
+                scattered = ray(rec.p, reflected, r_in.time());
                 return true;
             }
             vec3 refracted = refract(unit_direction, rec.normal, etai_over_etat);
-            scattered = ray(rec.p, refracted);
+            scattered = ray(rec.p, refracted, r_in.time());
             return true;
         }
 
@@ -85,6 +88,38 @@ class dielectric : public material {
         double ref_idx;
 };
 
+class diffuse_light : public material  {
+    public:
+        diffuse_light(shared_ptr<texture> a) : emit(a) {}
+        diffuse_light(color c) : emit(make_shared<solid_color>(c)) {}
 
+        virtual bool scatter(const ray& r_in, const hit_record& rec, color& attenuation, ray& scattered) const override {
+            return false;
+        }
+
+        virtual color emitted(double u, double v, const point3& p) const  {
+            return emit->value(u, v, p);
+        }
+
+    public:
+        shared_ptr<texture> emit;
+};
+
+class isotropic : public material {
+    public:
+        isotropic(color c) : albedo(make_shared<solid_color>(c)) {}
+        isotropic(shared_ptr<texture> a) : albedo(a) {}
+
+        virtual bool scatter(
+            const ray& r_in, const hit_record& rec, color& attenuation, ray& scattered
+        ) const override {
+            scattered = ray(rec.p, random_in_unit_sphere(), r_in.time());
+            attenuation = albedo->value(rec.u, rec.v, rec.p);
+            return true;
+        }
+
+    public:
+        shared_ptr<texture> albedo;
+};
 
 #endif
