@@ -108,18 +108,14 @@ hittable_list two_perlin_spheres() {
     return objects;
 }
 
-hittable_list earth()
+/*hittable_list earth()
 {
-
-   
-    
-
-    auto earth_texture = make_shared<image_texture>("1.jpg");
+    auto earth_texture = make_shared<image_texture>("D:/N2Ray/N2Ray/1.jpg");
     auto earth_surface = make_shared<lambertian>(earth_texture);
     const auto globe = make_shared<sphere>(point3(0, 0, 0), 2, earth_surface);
 
     return hittable_list(globe);
-}
+}*/
 
 hittable_list simple_light() {
     hittable_list objects;
@@ -232,8 +228,8 @@ hittable_list final_scene() {
     boundary = make_shared<sphere>(point3(0, 0, 0), 5000, make_shared<dielectric>(1.5));
     objects.add(make_shared<constant_medium>(boundary, .0001, color(1,1,1)));
 
-    auto emat = make_shared<lambertian>(make_shared<image_texture>("1.jpg"));
-    objects.add(make_shared<sphere>(point3(400,200,400), 100, emat));
+    //auto emat = make_shared<lambertian>(make_shared<image_texture>("1.jpg"));
+    //objects.add(make_shared<sphere>(point3(400,200,400), 100, emat));
     auto pertext = make_shared<noise_texture>(0.1);
     objects.add(make_shared<sphere>(point3(220,280,300), 80, make_shared<lambertian>(pertext)));
 
@@ -260,9 +256,9 @@ int main() {
     // Image
 
     auto aspect_ratio = 16.0 / 9.0;
-    int image_width = 800;
+    int image_width = 400;
     
-    int samples_per_pixel = 1000;
+    int samples_per_pixel = 500;
     int max_depth = 50;
 
     // World
@@ -276,6 +272,7 @@ int main() {
     color background(0,0,0);
 
     switch (0) {
+        //default:
         case 1:
             world = random_scene();
             background = color(0.70, 0.80, 1.00);
@@ -285,7 +282,7 @@ int main() {
             aperture = 0.1;
             break;
 
-        // default:
+        //default:
         case 2:
             world = two_spheres();
             background = color(0.70, 0.80, 1.00);
@@ -304,13 +301,13 @@ int main() {
             break;
 
         //default:
-        case 4:
+        /*case 4:
             world = earth();
             background = color(0.70, 0.80, 1.00);
             lookfrom = point3(13,2,3);
             lookat = point3(0,0,0);
             vfov = 20.0;
-            break;
+            break;*/
 
         //default:
         case 5:
@@ -345,12 +342,12 @@ int main() {
             vfov = 40.0;
             break;
 
-        default:
+        //default:
         case 8:
             world = final_scene();
             aspect_ratio = 1.0;
             image_width = 800;
-            samples_per_pixel = 1000;
+            samples_per_pixel = 100;
             background = color(0,0,0);
             lookfrom = point3(478, 278, -600);
             lookat = point3(278, 278, 0);
@@ -383,10 +380,7 @@ int main() {
 
     std::cout << "P3\n" << image_width << " " << image_height << "\n255\n";
 
-    unsigned char* data = new unsigned char[image_width * image_height * 3];
-
-
-
+    unsigned char* data = new unsigned char[(image_width) * (image_height) * 3];
 
     #pragma omp parallel for
     for (int j = image_height - 1; j >= 0; --j) {
