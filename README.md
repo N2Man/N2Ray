@@ -1,13 +1,21 @@
-# An easy project for ray tracing
+# N2Ray
 
-The code of the book《Ray Tracing in One Weekend》and 《Ray Tracing: The Next Week》.
+This renderer is based on the 《Ray Tracing》series written by Peter Shirley and will be improved according to *Physically Based Rendering*, Third Edition.
 
-And the final result is:
+This project is used for personal study in computer graphics.
 
-![](image/image.jpg)
+All the images followed is be created by N2Ray.
 
-![](image/CornellBox.jpg)
+![random_scene](https://i.loli.net/2021/10/04/x1Jft74bVKd9P3p.jpg)
 
-![](image/final.jpg)
+![two_spheres](https://i.loli.net/2021/10/04/2ZA4RzxTjp9VJkb.jpg)
 
-Fail to get the earthmap. (don't know why QAQ)
+![two_perlin_spheres](https://i.loli.net/2021/10/04/aDcOTKBPLXJ8p4v.jpg)
+
+![simple_light](https://i.loli.net/2021/10/04/X98HrTUaYmk24BS.jpg)
+
+![cornell_box](https://i.loli.net/2021/10/04/WYSeJ8yZiVsUvBf.jpg)
+
+![cornell_smoke](https://i.loli.net/2021/10/04/OuqG921KMJSwYUD.jpg)
+
+![final_scene](https://i.loli.net/2021/10/04/1YqtiOVHAkFo2fx.jpg)
