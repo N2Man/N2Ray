@@ -1,6 +1,6 @@
 # N2Ray
 
-This renderer is based on the 《Ray Tracing》series written by Peter Shirley and will be improved according to *Physically Based Rendering*, Third Edition.
+This renderer is based on the *《Ray Tracing》*series written by Peter Shirley and will be improved according to *Physically Based Rendering*, Third Edition.
 
 This project is used for personal study in computer graphics.
 
