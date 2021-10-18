@@ -19,3 +19,8 @@ All the images followed is be created by N2Ray.
 ![cornell_smoke](https://i.loli.net/2021/10/04/OuqG921KMJSwYUD.jpg)
 
 ![final_scene](https://i.loli.net/2021/10/04/1YqtiOVHAkFo2fx.jpg)
+
+![cornell_box_pdf](https://i.loli.net/2021/10/18/CYGAfrB9NXHxUby.jpg)
+
+![cornell_box_pdf2](https://i.loli.net/2021/10/18/HNPBGJ9bW6CIpKX.jpg)
+
