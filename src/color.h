@@ -7,12 +7,16 @@
 
 
 
-void write_color(/*std::ostream& out, */color pixel_color, int samples_per_pixel, unsigned char* data, int x, int y, int i, int j) {
+
+void write_color(color pixel_color, int samples_per_pixel, unsigned char* data, int x, int y, int i, int j) {
     auto r = pixel_color.x();
     auto g = pixel_color.y();
     auto b = pixel_color.z();
 
-    // Divide the color by the number of samples.
+    if (r != r) r = 0.0;
+    if (g != g) g = 0.0;
+    if (b != b) b = 0.0;
+
     auto scale = 1.0 / samples_per_pixel;
     r = sqrt(scale * r);
     g = sqrt(scale * g);

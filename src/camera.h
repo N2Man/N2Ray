@@ -10,7 +10,7 @@ class camera {
             point3 lookfrom, 
             point3 lookat, 
             vec3 vup, 
-            double vfov, // vertical field-of-view in degrees
+            double vfov,
             double aspect_ratio,
             double aperture,
             double focus_dist,

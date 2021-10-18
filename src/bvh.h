@@ -27,7 +27,6 @@ class bvh_node : public hittable
         aabb box;
 };
 
-// 3.10. The Box Comparison Functions
 inline bool box_compare(const shared_ptr<hittable> a, const shared_ptr<hittable> b, int axis)
 {
     aabb box_a;
@@ -54,7 +53,6 @@ bool box_z_compare (const shared_ptr<hittable> a, const shared_ptr<hittable> b)
     return box_compare(a, b, 2);
 }
 
-// 3.9. Splitting BVH Volumes
 bvh_node::bvh_node(std::vector<shared_ptr<hittable>>& objects, size_t start, size_t end, 
         double time0, double time1)
 {
@@ -83,16 +81,12 @@ bvh_node::bvh_node(std::vector<shared_ptr<hittable>>& objects, size_t start, siz
 
     aabb box_left, box_right;
 
-    if (  !left ->bounding_box(time0, time1, box_left) || !right->bounding_box(time0, time1, box_right))
+    if (!left ->bounding_box(time0, time1, box_left) || !right->bounding_box(time0, time1, box_right))
         std::cerr << "No bounding box in bvh_node constructor.\n";
 
     box = surrounding_box(box_left, box_right);
 }
 
-// 3.8. The BVH Node Class
-// The hit function is pretty straightforward:
-// check whether the box for the node is hit,
-// and if so, check the children and sort out any details
 bool bvh_node::hit(const ray& r, double t_min, double t_max, hit_record& rec) const
 {
     if (!box.hit(r, t_min, t_max)) return false;

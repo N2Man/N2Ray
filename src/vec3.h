@@ -68,13 +68,10 @@ class vec3 {
 
 };
 
-//Type aliases for vec3
-using point3 = vec3;  //3D point
-using color = vec3;  //RGB color
 
+using point3 = vec3; 
+using color = vec3; 
 
-
-//vec3 Utility Functions
 
 inline std::ostream& operator<<(std::ostream &out, const vec3 &v) {
     return out <<v.e[0] << ' ' << v.e[1] << ' ' << v.e[2];
@@ -143,7 +140,7 @@ vec3 random_in_unit_disk() {
 
 vec3 random_in_hemisphere(const vec3& normal) {
     vec3 in_unit_sphere = random_in_unit_sphere();
-    if (dot(in_unit_sphere, normal) > 0.0) // In the same hemisphere as the normal
+    if (dot(in_unit_sphere, normal) > 0.0) 
         return in_unit_sphere;
     else
         return -in_unit_sphere;

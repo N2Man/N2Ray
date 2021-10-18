@@ -7,8 +7,6 @@
 #include <memory>
 #include <vector>
 
-using std::shared_ptr;
-using std::make_shared;
 
 class hittable_list : public hittable {
     public:
@@ -20,6 +18,8 @@ class hittable_list : public hittable {
 
         virtual bool hit(const ray& r, double t_min, double t_max, hit_record& rec) const override;
         virtual bool bounding_box(double time0, double time1, aabb& output_box) const override;
+        virtual double pdf_value(const vec3& o, const vec3& v) const override;
+        virtual vec3 random(const vec3& o) const override;
 
     public:
         std::vector<shared_ptr<hittable>> objects;
@@ -55,4 +55,21 @@ bool hittable_list::bounding_box(double time0, double time1, aabb& output_box) c
 
     return true;
 }
+
+double hittable_list::pdf_value(const point3& o, const vec3& v) const {
+    auto weight = 1.0 / objects.size();
+    auto sum = 0.0;
+
+    for (const auto& object : objects)
+        sum += weight * object->pdf_value(o, v);
+
+    return sum;
+}
+
+
+vec3 hittable_list::random(const vec3& o) const {
+    auto int_size = static_cast<int>(objects.size());
+    return objects[random_int(0, int_size - 1)]->random(o);
+}
+
 #endif
